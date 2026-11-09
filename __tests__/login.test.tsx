@@ -1,13 +1,15 @@
 import React from 'react'; // Ensures React is in scope when JSX is used
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import LoginForm from '../components/login-form';
-import { signIn } from 'next-auth/react';
+import { signIn } from '@/lib/auth-client';
 import { toast } from '@/hooks/use-toast';
 
-// Mock the signIn function from next-auth
-jest.mock('next-auth/react', () => ({
-  signIn: jest.fn(),
+// Mock the Better Auth client
+jest.mock('@/lib/auth-client', () => ({
+  signIn: { email: jest.fn(), social: jest.fn() },
 }));
+
+const mockedSignIn = signIn as unknown as { email: jest.Mock; social: jest.Mock };
 
 // Mock the toast function
 jest.mock('@/hooks/use-toast', () => ({
@@ -41,8 +43,7 @@ test('renders login form and handles input', async () => {
 
   // Check if signIn function is called with the correct parameters
   await waitFor(() => {
-    expect(signIn).toHaveBeenCalledWith('credentials', {
-      redirect: false,
+    expect(mockedSignIn.email).toHaveBeenCalledWith({
       email: 'test@example.com',
       password: 'password123',
     });
@@ -51,7 +52,7 @@ test('renders login form and handles input', async () => {
 
 test('displays error message on failed login', async () => {
   // Mock signIn to simulate a failure
-  (signIn as jest.Mock).mockResolvedValueOnce({ error: 'Invalid credentials' });
+  mockedSignIn.email.mockResolvedValueOnce({ data: null, error: { message: 'Invalid credentials', code: 'INVALID_EMAIL_OR_PASSWORD' } });
 
   render(<LoginForm />);
 
@@ -77,7 +78,7 @@ test('displays error message on failed login', async () => {
     expect(toast).toHaveBeenCalledWith({
       variant: 'destructive',
       title: 'Uh oh! Something went wrong.',
-      // description: "Invalid credentials",
+      description: 'Invalid credentials',
     });
   });
 });
@@ -93,8 +94,6 @@ test('triggers Google login on button click', async () => {
 
   // Verify that the signIn function is called with "google" as the provider
   await waitFor(() => {
-    expect(signIn).toHaveBeenCalledWith('google', {
-      redirectTo: '/',
-    });
+    expect(mockedSignIn.social).toHaveBeenCalledWith({ provider: 'google' });
   });
 });

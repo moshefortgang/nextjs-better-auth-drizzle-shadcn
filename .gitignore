@@ -38,3 +38,5 @@ yarn-error.log*
 
 .codegpt
 .vscode
+# typescript
+*.tsbuildinfo

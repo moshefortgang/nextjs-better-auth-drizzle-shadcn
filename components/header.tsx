@@ -3,7 +3,6 @@
 import { Search } from './search';
 import { SidebarTrigger } from './ui/sidebar';
 import { UserNav } from './user-nav';
-import { SessionProvider } from 'next-auth/react';
 
 export default function Header() {
  return (
@@ -12,9 +11,7 @@ export default function Header() {
         <SidebarTrigger />
         <div className="ml-auto flex items-center space-x-4">
           <Search />
-					<SessionProvider>
           <UserNav />
-					</SessionProvider>
         </div>
       </div>
     </header>

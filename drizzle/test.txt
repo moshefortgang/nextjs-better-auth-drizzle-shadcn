@@ -1,0 +1,49 @@
+CREATE TABLE IF NOT EXISTS "verification" (
+	"id" text PRIMARY KEY NOT NULL,
+	"identifier" text NOT NULL,
+	"value" text NOT NULL,
+	"expires_at" timestamp NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+ALTER TABLE "account" DROP CONSTRAINT "account_provider_providerAccountId_pk";--> statement-breakpoint
+-- ALTER TABLE "account" ALTER COLUMN "expires_at" SET DATA TYPE timestamp;--> statement-breakpoint
+ALTER TABLE "account" ALTER COLUMN "expires_at" TYPE TIMESTAMP WITHOUT TIME ZONE USING to_timestamp("expires_at");
+
+/* 
+    Unfortunately in current drizzle-kit version we can't automatically get name for primary key.
+    We are working on making it available!
+
+    Meanwhile you can:
+        1. Check pk name in your database, by running
+            SELECT constraint_name FROM information_schema.table_constraints
+            WHERE table_schema = 'public'
+                AND table_name = 'session'
+                AND constraint_type = 'PRIMARY KEY';
+        2. Uncomment code below and paste pk name manually
+        
+    Hope to release this update as soon as possible
+*/
+
+ALTER TABLE "session" DROP CONSTRAINT "session_pkey";--> statement-breakpoint
+
+-- ALTER TABLE "user" ALTER COLUMN "emailVerified" SET DATA TYPE boolean;--> statement-breakpoint
+-- ALTER TABLE "user" ALTER COLUMN "emailVerified" SET DEFAULT false;--> statement-breakpoint
+-- ALTER TABLE "user" ALTER COLUMN "emailVerified" SET NOT NULL;--> statement-breakpoint
+ALTER TABLE "user" ALTER COLUMN "emailVerified" TYPE boolean USING ("emailVerified" IS NOT NULL);
+
+ALTER TABLE "account" ADD COLUMN "id" text PRIMARY KEY NOT NULL;--> statement-breakpoint
+ALTER TABLE "account" ADD COLUMN "created_at" timestamp DEFAULT now() NOT NULL;--> statement-breakpoint
+ALTER TABLE "account" ADD COLUMN "updated_at" timestamp NOT NULL;--> statement-breakpoint
+ALTER TABLE "session" ADD COLUMN "id" text PRIMARY KEY NOT NULL;--> statement-breakpoint
+ALTER TABLE "session" ADD COLUMN "created_at" timestamp DEFAULT now() NOT NULL;--> statement-breakpoint
+ALTER TABLE "session" ADD COLUMN "updated_at" timestamp NOT NULL;--> statement-breakpoint
+ALTER TABLE "session" ADD COLUMN "ip_address" text;--> statement-breakpoint
+ALTER TABLE "session" ADD COLUMN "user_agent" text;--> statement-breakpoint
+ALTER TABLE "user" ADD COLUMN "created_at" timestamp DEFAULT now() NOT NULL;--> statement-breakpoint
+ALTER TABLE "user" ADD COLUMN "updated_at" timestamp DEFAULT now() NOT NULL;--> statement-breakpoint
+ALTER TABLE "account" DROP COLUMN IF EXISTS "type";--> statement-breakpoint
+ALTER TABLE "account" DROP COLUMN IF EXISTS "token_type";--> statement-breakpoint
+ALTER TABLE "account" DROP COLUMN IF EXISTS "session_state";--> statement-breakpoint
+ALTER TABLE "session" ADD CONSTRAINT "session_sessionToken_unique" UNIQUE("sessionToken");

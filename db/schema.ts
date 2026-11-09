@@ -6,7 +6,6 @@ import {
   primaryKey,
   integer,
 } from "drizzle-orm/pg-core"
-import type { AdapterAccountType } from "next-auth/adapters"
 
 
 export const users = pgTable("user", {
@@ -39,7 +38,9 @@ export const accounts = pgTable(
     refreshToken: text("refresh_token"),
     accessToken: text("access_token"),
     accessTokenExpiresAt: timestamp("expires_at"),
+    refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
     scope: text("scope"),
+    password: text("password"),
     idToken: text("id_token"),
 		createdAt: timestamp("created_at").defaultNow().notNull(),
 		updatedAt: timestamp("updated_at")

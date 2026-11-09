@@ -10,8 +10,8 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from './ui/form';
-import { register } from '@/actions/auth';
 import { useRouter } from 'next/navigation';
+import { signUp } from '@/lib/auth-client';
 
 const formSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -35,13 +35,19 @@ export default function RegisterForm() {
     },
   });
 
-   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const res = await register(values);
-    if (res.message !== 'success') {
-      form.setError('email', { type: 'manual', message: res.message });
-    } else {
-      router.push('/login');
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { error } = await signUp.email({
+      email: values.email,
+      password: values.password,
+      name: values.name,
+    });
+
+    if (error) {
+      form.setError('email', { type: 'manual', message: error.message ?? 'Registration failed' });
+      return;
     }
+
+    router.push('/');
   }
 
   return (

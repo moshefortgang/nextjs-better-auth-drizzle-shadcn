@@ -2,6 +2,7 @@
  * For a detailed explanation regarding each configuration property, visit:
  * https://jestjs.io/docs/configuration
  */
+import type { Config } from 'jest'
 import nextJest from 'next/jest.js'
 
 const createJestConfig = nextJest({
@@ -10,8 +11,7 @@ const createJestConfig = nextJest({
 })
  
 
-/** @type {import('jest').Config} */
-const config = {
+const config: Config = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 

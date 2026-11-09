@@ -35,11 +35,11 @@ export default function LoginForm() {
       toast({
         variant: 'destructive',
         title: 'Uh oh! Something went wrong.',
-        description: (res as any).code,
+        description: res.error.message ?? res.error.code,
       });
-      form.setError('password', { type: 'manual', message: (res as any).code });
+      form.setError('password', { type: 'manual', message: res.error.message ?? res.error.code });
     } else {
-      window.location.href = '/';
+      window.location.assign('/');
     }
   }
 

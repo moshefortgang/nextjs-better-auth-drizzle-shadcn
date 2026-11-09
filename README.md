@@ -1,4 +1,4 @@
-# Next.js 15 + Better Auth + Drizzle + Shadcn/UI + Jest
+# Next.js 16 + Better Auth + Drizzle + Shadcn/UI + Jest
 
 A modern stack for building full-stack web applications with:  
 - **[Next.js](https://nextjs.org/)** for performance and scalability.
@@ -40,7 +40,8 @@ A modern stack for building full-stack web applications with:
    # Generate one here: https://generate-secret.vercel.app/32 (only required for localhost)
    BETTER_AUTH_SECRET=your_secret_key
 
-   BASE_URL=base_url
+   BETTER_AUTH_URL=http://localhost:3000
+   NEXT_PUBLIC_BASE_URL=http://localhost:3000
 
    AUTH_GOOGLE_ID=your_google_client_id
    AUTH_GOOGLE_SECRET=your_google_client_secret
