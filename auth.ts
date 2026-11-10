@@ -10,12 +10,25 @@ export const adminUserIds = (process.env.ADMIN_USER_IDS ?? "")
   .map((id) => id.trim())
   .filter(Boolean);
 
+function e2eRateLimitDisabled() {
+  if (process.env.E2E_DISABLE_RATE_LIMIT !== "true") return false;
+  try {
+    const { hostname } = new URL(process.env.BETTER_AUTH_URL ?? "");
+    return hostname === "localhost" || hostname === "127.0.0.1";
+  } catch {
+    return false;
+  }
+}
+
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
     usePlural: true,
   }),
   emailAndPassword: { enabled: true },
+  // E2E tests create many accounts from one IP in seconds. The flag only takes effect when
+  // the app is served from localhost, so setting it on a deployed environment does nothing.
+  rateLimit: { enabled: e2eRateLimitDisabled() ? false : undefined },
   socialProviders: {
     google: {
       clientId: process.env.AUTH_GOOGLE_ID!,
