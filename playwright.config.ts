@@ -36,8 +36,8 @@ export default defineConfig({
     // CI builds in a separate step. Locally we build here too, because a second `next dev`
     // can't run next to yours. The build has no port baked in, so it still works for `pnpm start`.
     command: process.env.CI
-      ? `pnpm start --port ${port}`
-      : `pnpm build && pnpm start --port ${port}`,
+      ? `pnpm start --hostname localhost --port ${port}`
+      : `pnpm build && pnpm start --hostname localhost --port ${port}`,
     url: baseURL,
     // Never reuse a server already on this port: it may use a different database than the
     // POSTGRES_URL the tests write to (makeAdmin), or a real one.
