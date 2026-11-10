@@ -45,14 +45,41 @@ A modern stack for building full-stack web applications with:
 
    AUTH_GOOGLE_ID=your_google_client_id
    AUTH_GOOGLE_SECRET=your_google_client_secret
-   
+
+   # Comma-separated user IDs that always have admin access
+   ADMIN_USER_IDS=
+   ```
+
 4. Apply migrations (if applicable):  
    ```bash
    npx drizzle-kit push
+   ```
 
 5. Run the app:  
    ```bash
    pnpm dev
+   ```
+
+## Admin: User Management
+
+The `/users` page (admins only) is built on the Better Auth [admin plugin](https://www.better-auth.com/docs/plugins/admin):
+
+- Search users by email with server-side pagination
+- Promote / demote admins
+- Ban and unban users (with a reason)
+- Impersonate a user, with a banner to return to your own account
+- Revoke all of a user's sessions, or delete the user
+
+Authorization is checked on the server for every request, not only in the proxy.
+
+**Make yourself the first admin.** Sign up, then either add your user ID to `.env`:
+```env
+ADMIN_USER_IDS=your-user-id
+```
+or set the role directly in the database:
+```sql
+UPDATE "user" SET role = 'admin' WHERE email = 'you@example.com';
+```
 
 ## Running Tests:
 This project uses Jest for unit testing.
@@ -60,3 +87,4 @@ This project uses Jest for unit testing.
 To run tests, use the following command:
 ```bash
 pnpm test
+```

@@ -11,6 +11,7 @@ import {
   Map,
   PieChart,
   Settings2,
+  ShieldCheck,
   SquareTerminal,
 } from "lucide-react"
 
@@ -45,10 +46,21 @@ const data = {
   ],
   navMain: [
     {
+      title: "Admin",
+      url: "/users",
+      icon: ShieldCheck,
+      isActive: true,
+      items: [
+        {
+          title: "Users",
+          url: "/users",
+        },
+      ],
+    },
+    {
       title: "Playground",
       url: "#",
       icon: SquareTerminal,
-      isActive: true,
       items: [
         {
           title: "History",
