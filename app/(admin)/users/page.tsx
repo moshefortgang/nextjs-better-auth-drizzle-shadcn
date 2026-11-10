@@ -35,7 +35,13 @@ export default async function UsersPage({
   if (!session) redirect("/login");
 
   const { q = "", page: pageParam } = await searchParams;
-  const page = Math.max(1, Math.floor(Number(pageParam)) || 1);
+  const requestedPage = Math.floor(Number(pageParam));
+  const page =
+    Number.isSafeInteger(requestedPage) &&
+    requestedPage > 0 &&
+    Number.isSafeInteger((requestedPage - 1) * PAGE_SIZE)
+      ? requestedPage
+      : 1;
 
   // The proxy only does an optimistic cookie check. listUsers enforces the
   // admin permission itself, so its 401/403 is our authorization check.

@@ -183,7 +183,7 @@ function UserRow({
         )}
       </TableCell>
       <TableCell className="hidden text-muted-foreground md:table-cell">
-        {new Date(user.createdAt).toLocaleDateString()}
+        {new Date(user.createdAt).toLocaleDateString("en-US", { timeZone: "UTC" })}
       </TableCell>
       <TableCell>
         <DropdownMenu>
