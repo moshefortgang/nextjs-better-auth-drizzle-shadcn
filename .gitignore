@@ -40,3 +40,9 @@ yarn-error.log*
 .vscode
 # typescript
 *.tsbuildinfo
+
+# playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
