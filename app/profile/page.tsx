@@ -1,3 +1,4 @@
+import { ModeToggle } from '@/components/mode-toggle';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import ProfileForm from '@/components/profile-form';
@@ -15,7 +16,10 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center px-4 py-12">
+    <div className="relative flex min-h-screen w-full items-center justify-center px-4 py-12">
+      <div className="absolute right-4 top-4">
+        <ModeToggle />
+      </div>
       <Card className="w-[450px]">
         <CardHeader>
           <CardTitle className="text-2xl text-center">My Profile</CardTitle>
