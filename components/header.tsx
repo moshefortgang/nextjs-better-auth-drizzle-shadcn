@@ -1,5 +1,6 @@
 
 // import { auth } from '@/app/auth';
+import { ModeToggle } from './mode-toggle';
 import { Search } from './search';
 import { SidebarTrigger } from './ui/sidebar';
 import { UserNav } from './user-nav';
@@ -11,6 +12,7 @@ export default function Header() {
         <SidebarTrigger />
         <div className="ml-auto flex items-center space-x-4">
           <Search />
+          <ModeToggle />
           <UserNav />
         </div>
       </div>

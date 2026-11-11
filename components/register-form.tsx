@@ -118,9 +118,9 @@ export default function RegisterForm() {
         </Form>
       </CardContent>
       <CardFooter>
-        <p className="text-center text-sm text-gray-600">
+        <p className="text-center text-sm text-muted-foreground">
           Already have an account?{' '}
-          <Link href="/login" className="font-semibold text-gray-800">
+          <Link href="/login" className="font-semibold text-foreground">
             Sign in
           </Link>
         </p>
